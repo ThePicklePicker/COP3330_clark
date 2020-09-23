@@ -1,2 +1,4 @@
-public class BodyMassIndex {
+public class BodyMassIndex
+{
+
 }
