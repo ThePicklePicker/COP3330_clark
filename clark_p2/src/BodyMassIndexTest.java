@@ -23,4 +23,48 @@ public class BodyMassIndexTest
 
         assertEquals("Normal Weight", category.toString());
     }
+
+    public void TestUnder()
+    {
+        double height = 72;
+        double weight = 120;
+        BodyMassIndex bmi = new BodyMassIndex(height,weight);
+        double sum = bmi.computeBmi(height, weight);
+        String category = bmi.categoryBmi(sum);
+
+        assertEquals("Underweight", category.toString());
+    }
+
+    public void TestNormal()
+    {
+        double height = 75;
+        double weight = 150;
+        BodyMassIndex bmi = new BodyMassIndex(height,weight);
+        double sum = bmi.computeBmi(height, weight);
+        String category = bmi.categoryBmi(sum);
+
+        assertEquals("Normal Weight", category.toString());
+    }
+
+    public void TestOver()
+    {
+        double height = 75;
+        double weight = 215;
+        BodyMassIndex bmi = new BodyMassIndex(height,weight);
+        double sum = bmi.computeBmi(height, weight);
+        String category = bmi.categoryBmi(sum);
+
+        assertEquals("Overweight", category.toString());
+    }
+
+    public void TestObesity()
+    {
+        double height = 75;
+        double weight = 250;
+        BodyMassIndex bmi = new BodyMassIndex(height,weight);
+        double sum = bmi.computeBmi(height, weight);
+        String category = bmi.categoryBmi(sum);
+
+        assertEquals("Obesity", category.toString());
+    }
 }
