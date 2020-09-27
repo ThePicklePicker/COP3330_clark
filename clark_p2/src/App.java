@@ -42,7 +42,12 @@ public class App
         System.out.println("Enter Height in inches:");
         double height = scanner.nextDouble();
         scanner.nextLine();
-        //Check if height is negative
+        while(height < 0)
+        {
+            System.out.println("Error Height Cannot Be Negative. Enter Height:");
+            height = scanner.nextDouble();
+            scanner.nextLine();
+        }
         return height;
     }
 
@@ -52,7 +57,12 @@ public class App
         System.out.println("Enter Weight in pounds:");
         double weight = scanner.nextDouble();
         scanner.nextLine();
-        //Check if weight is negative
+        while(weight < 0)
+        {
+            System.out.println("Error Weight Cannot Be Negative. Enter Weight:");
+            weight = scanner.nextDouble();
+            scanner.nextLine();
+        }
         return weight;
     }
 
