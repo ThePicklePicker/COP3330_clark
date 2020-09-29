@@ -9,8 +9,9 @@ public class BodyMassIndexTest
         double weight = 0;
         BodyMassIndex bmi = new BodyMassIndex(height, weight);
         double sum = bmi.computeBmi(75, 150);
+        double round = Math.round(sum * 10) / 10.0;
 
-        assertEquals(18.7, sum);
+        assertEquals(18.7, round);
     }
 
     public void TestCategoryBmi()
