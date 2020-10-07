@@ -62,7 +62,7 @@ public class ShapeTest
     @Test
     public void testCircleArea2()
     {
-        Shape2D shape = new Circle(10);
+        Shape2D shape = new Circle(0.5);
         assertEquals(0.79, shape.getArea(), 0.01);
     }
 
@@ -83,7 +83,7 @@ public class ShapeTest
     @Test
     public void testCubeArea2()
     {
-        Shape shape = new Cube(0.5);
+        Shape3D shape = new Cube(0.5);
         assertEquals(1.5, shape.getArea());
     }
 
@@ -153,7 +153,7 @@ public class ShapeTest
     @Test
     public void testSphereArea2()
     {
-        Shape3D shape = new sphere(0.75);
+        Shape3D shape = new Sphere(0.75);
         assertEquals(7.07, shape.getArea(), 0.01);
     }
 
