@@ -13,14 +13,16 @@ public class App {
 
         if(choice == 1){
             //call create TaskList
-            System.out.println("List created successfully");
+            Scanner string = new Scanner(System.in);
+            System.out.println("Enter new list name:");
+            String name = string.nextLine();
+            TaskList title = new TaskList(name);
             ListOperation();
 
         }
         else if (choice == 2){
             System.out.println("Enter filename to open:");
             String fileName = input.nextLine();
-            //call open TaskList using file name given
             ListOperation();
 
         }
@@ -34,14 +36,25 @@ public class App {
                 "3) Edit an item\n4) Remove an item\n5) Mark an item as completed\n6) Unmark an item as completed\n" +
                 "7) Save the current list\n8) Quit to main menu");
         Scanner input = new Scanner(System.in);
+        Scanner string = new Scanner(System.in);
         int choice = input.nextInt();
 
         switch(choice){
             case(1): System.out.println("Enter list name:");
-                String name = input.nextLine();
-                //call view list using title name
+                String name = string.nextLine();
+                TaskList.printList(name);
+                ListOperation();
 
-            case(2): //add an item to the list
+            case(2): Scanner task = new Scanner(System.in);
+                System.out.println("Enter task item name:" );
+                String taskName = task.nextLine();
+                System.out.println("Enter task description:");
+                String description = task.nextLine();
+                System.out.println("Enter due date in YYYY-MM-DD format:");
+                String dueDate = task.nextLine();
+                TaskItem Item = new TaskItem(taskName, description, dueDate);
+
+
 
             case(3): //edit an item in the list
 
