@@ -1,7 +1,11 @@
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class App {
+    static TaskList newList;
+
     public static void main(String[] args){
         mainMenu();
 
@@ -13,12 +17,15 @@ public class App {
         int choice = input.nextInt();
 
         if(choice == 1){
-            TaskList newList = new TaskList();
+            newList = new TaskList();
             ListOperation();
         }
         else if (choice == 2){
-            System.out.println("Enter filename to open:");
-            String fileName = input.nextLine();
+            newList = new TaskList();
+            System.out.println("Enter file name to save as: ");
+            Scanner string = new Scanner(System.in);
+            String filename = string.nextLine();
+            newList.loadList(filename);
             ListOperation();
         }
         else if (choice == 3){
@@ -34,25 +41,83 @@ public class App {
         int choice = input.nextInt();
 
         switch(choice){
-            case(1): TaskList.printList();
+            case(1): newList.printList();
                 ListOperation();
 
-            case(2): TaskList.addTask();
+            case(2): Scanner string = new Scanner(System.in);
+            String name = null;
+            boolean n = false;
+            while (n == false){
+                System.out.println("Enter task name:");
+                name = string.nextLine();
+                if(name.length() == 0){
+                    System.out.println("Invalid title.");
+                }
+                else{
+                    n = true;
+                }
+            }
+                System.out.println("Enter description:");
+                String description = string.nextLine();
+                System.out.println("Enter due date in YYYY/MM/DD format:");
+                Scanner dates = new Scanner(System.in);
+                Date date = null;
+                while(date == null) {
+                    try {
+                        date = new SimpleDateFormat("yyyy/MM/dd").parse(dates.nextLine());
+                    } catch (ParseException e) {
+                        System.out.println("Date is incorrect. Please try again.");
+                    }
+                }
+                newList.addTask(name, description, date);
                 ListOperation();
 
-            case(3): TaskList.editTask();
+            case(3):
+                newList.printList();
+
+                System.out.println("Which task would you like to edit?");
+                Scanner num = new Scanner(System.in);
+                int nu = num.nextInt();
+                Scanner strings = new Scanner(System.in);
+                String names = null;
+                boolean na = false;
+                while (na == false){
+                    System.out.println("Enter task name:");
+                    names = strings.nextLine();
+                    if(names.length() == 0){
+                        System.out.println("Invalid title.");
+                    }
+                    else{
+                        na = true;
+                    }
+                }
+
+                System.out.println("Enter new description:");
+                String descr = strings.nextLine();
+                System.out.println("Enter new due date in YYYY/MM/DD format:");
+                Scanner d = new Scanner(System.in);
+                date = null;
+                while(date == null) {
+                    try {
+                        date = new SimpleDateFormat("yyyy/MM/dd").parse(d.nextLine());
+                        String sdf = new SimpleDateFormat("yyyy/MM/dd").format(date);
+                    } catch (ParseException e) {
+                        System.out.println("Date is incorrect. Please try again.");
+                    }
+                }
+                newList.editTask(names, descr, date, nu);
                 ListOperation();
 
-            case(4): TaskList.removeTask();
+            case(4): newList.removeTask();
                 ListOperation();
 
-            case(5): TaskList.markComplete();
+            case(5): newList.markComplete();
                 ListOperation();
 
-            case(6): TaskList.unmark();
+            case(6): newList.unmark();
                 ListOperation();
 
-            case(7): TaskList.saveList();
+            case(7): newList.saveList();
                 ListOperation();
 
             case(8): mainMenu();

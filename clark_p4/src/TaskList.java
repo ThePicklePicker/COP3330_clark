@@ -1,59 +1,44 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.Scanner;
 
 public class TaskList {
-    public static ArrayList<TaskItem> tasks;
-    public static int num;
+    public ArrayList<TaskItem> tasks;
 
     public TaskList(){
         tasks = new ArrayList<>();
-        num = 0;
     }
 
-    public ArrayList<TaskItem> getArrayList(){
-        return tasks;
+    public int getSize(){
+        return tasks.size();
     }
 
-    public static void addTask(){
-        Scanner string = new Scanner(System.in);
-        System.out.println("Enter task name:");
-        String name = string.nextLine();
-        System.out.println("Enter description:");
-        String description = string.nextLine();
-        System.out.println("Enter due date in YYYY/MM/DD format:");
-        Scanner dates = new Scanner(System.in);
-        Date date = null;
-        try {
-            date = new SimpleDateFormat("yyyy/MM/dd").parse(dates.nextLine());
-            String sdf = new SimpleDateFormat("yyyy/MM/dd").format(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    public void addTask(String name,String description, Date date){
         TaskItem task = new TaskItem(name, description, date);
         tasks.add(task);
-        num += num;
         System.out.println("Task successfully added.");
     }
 
-    public static void printList(){
-        System.out.println("Current Tasks\n-------------\n\n");
+    public void printList(){
+        System.out.println("Current Tasks\n-------------\n");
 
         for(int i = 0; i < tasks.size(); i++){
-            String s = TaskItem.toString(tasks.get(i));
+            String s = tasks.get(i).toString(tasks.get(i));
             System.out.println(i + ") " + s);
         }
     }
 
-    public static void markComplete(){
-        System.out.println("Uncompleted Tasks\n-----------------\n\n");
+    public void markComplete(){
+        System.out.println("Uncompleted Tasks\n-----------------\n");
         for(int i = 0; i < tasks.size(); i++){
-            if(tasks.get(i).complete == false){
-                    String s = TaskItem.toString(tasks.get(i));
+            if(!tasks.get(i).complete){
+                    String s = tasks.get(i).toString(tasks.get(i));
                     System.out.println(i + ") " + s);
             }
         }
@@ -61,14 +46,18 @@ public class TaskList {
         System.out.println("Which task is completed?");
         Scanner num = new Scanner(System.in);
         int n = num.nextInt();
+        complete(n);
+    }
+
+    public void complete(int n){
         tasks.get(n).complete = true;
     }
 
-    public static void unmark(){
-        System.out.println("Completed Tasks\n-----------------\n\n");
+    public void unmark(){
+        System.out.println("Completed Tasks\n-----------------\n");
         for(int i = 0; i < tasks.size(); i++){
-            if(tasks.get(i).complete == true){
-                String s = TaskItem.toString(tasks.get(i));
+            if(tasks.get(i).complete){
+                String s = tasks.get(i).toString(tasks.get(i));
                 System.out.print(i + ") " + s);
             }
         }
@@ -76,65 +65,81 @@ public class TaskList {
         System.out.println("Which task is uncompleted?");
         Scanner num = new Scanner(System.in);
         int n = num.nextInt();
+        incomplete(n);
+    }
+
+    public void incomplete(int n){
         tasks.get(n).complete = false;
     }
 
-    public static void editTask(){
-        printList();
-
-        System.out.println("Which task would you like to edit?");
-        Scanner num = new Scanner(System.in);
-        int n = num.nextInt();
-
-        Scanner string = new Scanner(System.in);
-        System.out.println("Enter new task name:");
-        String name = string.nextLine();
-        System.out.println("Enter new description:");
-        String desc = string.nextLine();
-        System.out.println("Enter new due date in YYYY/MM/DD format:");
-        Scanner d = new Scanner(System.in);
-        Date date = null;
-        try {
-            date = new SimpleDateFormat("yyyy/MM/dd").parse(d.nextLine());
-            String sdf = new SimpleDateFormat("yyyy/MM/dd").format(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void editTask(String name, String desc, Date date, int n){
 
         tasks.get(n).title = name;
         tasks.get(n).description = desc;
         tasks.get(n).dueDate = date;
     }
 
-    public static void removeTask(){
+    public void removeTask(){
         printList();
 
         System.out.println("Which task would you like to remove?");
         Scanner num = new Scanner(System.in);
         int n = num.nextInt();
+        deleteTask(n);
+    }
+
+    public void deleteTask(int n){
         tasks.remove(n);
     }
 
-    public static void saveList(){
+    public void saveList() {
         System.out.println("Enter file name to save as: ");
         Scanner string = new Scanner(System.in);
         String filename = string.nextLine();
-        Formatter x = null;
+        File file = new File(filename);
         try {
-            x = new Formatter(filename);
+            if(file.createNewFile()){
+                System.out.println("File created");
+                writeFile(file);
+            } else {
+               //file exists
+                writeFile(file);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch(Exception e){
-            System.out.println("error");
-        }
-
-        for(int i = 0; i < tasks.size(); i++){
-            String s = TaskItem.toString(tasks.get(i));
-            x.format(s);
-        }
-
-        x.close();
 
         System.out.println("File saved");
+    }
+
+    public void loadList(String filename) {
+
+        File file = new File(filename);
+        try {
+            if(file.exists()) {
+                Scanner s = new Scanner(file);
+                while(s.hasNextLine()){
+                    String str = s.nextLine();
+                    tasks.add(new TaskItem(str));
+                }
+                System.out.println("File loaded");
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeFile(File file){
+        try {
+            PrintWriter print = new PrintWriter(file);
+            for (TaskItem task : tasks) {
+                print.println(task.toFileString());
+            }
+            print.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 }
